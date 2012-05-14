@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-ux-upload-data-Connection'>/**
+</span> * Modified Ext.data.Connection object, adapted to be able to report progress.
+ */
+Ext.define('Ext.ux.upload.data.Connection', {
+    extend : 'Ext.data.Connection',
+
+<span id='Ext-ux-upload-data-Connection-cfg-progressCallback'>    /**
+</span>     * @cfg {Function}
+     * 
+     * Callback fired when a progress event occurs (xhr.upload.onprogress).
+     */
+    progressCallback : null,
+
+    request : function(options) {
+        var progressCallback = options.progress;
+        if (progressCallback) {
+            this.progressCallback = progressCallback;
+        }
+
+        this.callParent(arguments);
+    },
+
+    getXhrInstance : function() {
+        var xhr = this.callParent(arguments);
+
+        if (this.progressCallback) {
+            xhr.upload.onprogress = this.progressCallback;
+        }
+
+        return xhr;
+    }
+});</pre>
+</body>
+</html>

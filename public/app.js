@@ -14,17 +14,18 @@ Ext.application({
 
     launch : function() {
         debug = console;
-        
+
         Ext.create('Ext.container.Viewport', {
             layout : 'fit'
         });
 
-        var dialog = Ext.create('Ext.window.Window', {
+        var appPanel = Ext.create('Ext.window.Window', {
             title : 'Files',
-            width : 400,
-            height : 300,
+            width : 600,
+            height : 400,
             closable : false,
             modal : true,
+            bodyPadding : 5,
             dockedItems : [
                 {
                     xtype : 'toolbar',
@@ -34,15 +35,28 @@ Ext.application({
                             xtype : 'button',
                             text : 'Upload files',
                             handler : function() {
+
                                 var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
-                                    dialogTitle: 'My Upload Dialog',
+                                    dialogTitle : 'My Upload Dialog',
                                     uploadUrl : 'upload.php',
-                                    listeners: {
+
+                                    listeners : {
                                         'uploadcomplete' : {
-                                            scope: this,
-                                            fn: function(dialog, manager, items, errorCount) {
-                                                console.log('uploaded:');
-                                                console.log(items);
+                                            scope : this,
+                                            fn : function(upDialog, manager, items, errorCount) {
+
+                                                var output = 'Uploaded files: <br>';
+                                                Ext.Array.each(items, function(item) {
+                                                    output += item.getFilename() + ' (' + item.getType() + ', '
+                                                    + Ext.util.Format.fileSize(item.getSize()) + ')' + '<br>';
+                                                });
+
+                                                appPanel.update(output);
+
+                                                if (!errorCount) {
+                                                    upDialog.close();
+                                                }
+
                                             }
                                         }
                                     }
@@ -56,6 +70,6 @@ Ext.application({
             ]
         });
 
-        dialog.show();
+        appPanel.show();
     }
 });

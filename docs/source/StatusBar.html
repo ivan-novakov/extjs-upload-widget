@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-ux-upload-StatusBar'>/**
+</span> * Upload status bar.
+ * 
+ * @class Ext.ux.upload.StatusBar
+ * @extends Ext.toolbar.Toolbar
+ */
+Ext.define('Ext.ux.upload.StatusBar', {
+    extend : 'Ext.toolbar.Toolbar',
+
+    config : {
+        selectionMessageText : 'Selected {0} file(s), {1}',
+        uploadMessageText : 'Upload progress {0}% ({1} of {2} file(s))',
+        textComponentId : 'mu-status-text'
+    },
+
+    constructor : function(config) {
+        this.initConfig(config);
+
+        return this.callParent(arguments);
+    },
+
+    initComponent : function() {
+
+        Ext.apply(this, {
+            items : [
+                {
+                    xtype : 'tbtext',
+                    id : this.textComponentId,
+                    text : '&amp;nbsp;'
+                }
+            ]
+        });
+
+        this.callParent(arguments);
+    },
+
+    setText : function(text) {
+        this.getComponent(this.textComponentId).setText(text);
+    },
+
+    setSelectionMessage : function(fileCount, byteCount) {
+        this.setText(Ext.String.format(this.selectionMessageText, fileCount, Ext.util.Format.fileSize(byteCount)));
+    },
+
+    setUploadMessage : function(progressPercent, uploadedFiles, totalFiles) {
+        this.setText(Ext.String.format(this.uploadMessageText, progressPercent, uploadedFiles, totalFiles));
+    }
+
+});</pre>
+</body>
+</html>
