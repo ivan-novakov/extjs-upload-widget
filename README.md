@@ -10,6 +10,12 @@ Features
   - displays upload progress
   - supports asynchronous (simultaneous) upload
 
+Requirements
+------------
+
+  - [ExtJS 4.x](http://www.sencha.com/products/extjs/)
+  - browser supporting the [File API](http://www.w3.org/TR/FileAPI/)
+  - server side :)
 
 Usage
 -----
@@ -28,6 +34,8 @@ Then you can use the dialog:
     });
     
     dialog.show();
+    
+For the server side, see the upload.php file in the example.
 
 Demo
 ----
