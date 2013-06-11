@@ -38,7 +38,9 @@ Ext.application({
 
                                 var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
                                     uploadUrl : 'upload.php',
-                                    //uploader : 'Ext.ux.upload.uploader.ExtJsUploader'
+                                    uploader : 'Ext.ux.upload.uploader.ExtJsUploader',
+                                    //uploadUrl : 'upload_multipart.php',
+                                    //uploader: 'Ext.ux.upload.uploader.FormDataUploader'
                                 });
 
                                 var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
