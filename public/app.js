@@ -36,9 +36,14 @@ Ext.application({
                             text : 'Upload files',
                             handler : function() {
 
+                                var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
+                                    uploadUrl : 'upload.php',
+                                    //uploader : 'Ext.ux.upload.uploader.ExtJsUploader'
+                                });
+
                                 var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
                                     dialogTitle : 'My Upload Dialog',
-                                    uploadUrl : 'upload.php',
+                                    panel : uploadPanel,
 
                                     listeners : {
                                         'uploadcomplete' : {
@@ -48,7 +53,7 @@ Ext.application({
                                                 var output = 'Uploaded files: <br>';
                                                 Ext.Array.each(items, function(item) {
                                                     output += item.getFilename() + ' (' + item.getType() + ', '
-                                                    + Ext.util.Format.fileSize(item.getSize()) + ')' + '<br>';
+                                                        + Ext.util.Format.fileSize(item.getSize()) + ')' + '<br>';
                                                 });
 
                                                 appPanel.update(output);
