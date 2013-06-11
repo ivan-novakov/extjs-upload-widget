@@ -42,7 +42,7 @@ Ext.application({
 
                                     listeners : {
                                         'uploadcomplete' : {
-                                            scope : this,
+                                            scope : uploadDialog,
                                             fn : function(upDialog, manager, items, errorCount) {
 
                                                 var output = 'Uploaded files: <br>';
@@ -54,7 +54,7 @@ Ext.application({
                                                 appPanel.update(output);
 
                                                 if (!errorCount) {
-                                                    upDialog.close();
+                                                    this.close();
                                                 }
 
                                             }
