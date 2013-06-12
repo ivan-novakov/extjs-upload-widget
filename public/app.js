@@ -26,60 +26,76 @@ Ext.application({
             closable : false,
             modal : true,
             bodyPadding : 5,
-            dockedItems : [
+
+            uploadComplete : function(items) {
+                var output = 'Uploaded files: <br>';
+                Ext.Array.each(items, function(item) {
+                    output += item.getFilename() + ' (' + item.getType() + ', '
+                        + Ext.util.Format.fileSize(item.getSize()) + ')' + '<br>';
+                });
+
+                this.update(output);
+            }
+        });
+
+        appPanel.addDocked({
+            xtype : 'toolbar',
+            dock : 'top',
+            items : [
                 {
-                    xtype : 'toolbar',
-                    dock : 'top',
-                    items : [
-                        {
-                            xtype : 'button',
-                            text : 'Upload files',
-                            handler : function() {
+                    xtype : 'button',
+                    text : 'Raw PUT/POST Upload',
+                    scope : appPanel,
+                    handler : function() {
 
-                                var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
-                                	//uploader: 'Ext.ux.upload.uploader.DummyUploader',
-                                	
-                                    uploadUrl : 'upload.php',
-                                    uploader : 'Ext.ux.upload.uploader.ExtJsUploader',
-                                    
-                                	//uploadUrl : 'upload_multipart.php',
-                                    //uploader: 'Ext.ux.upload.uploader.FormDataUploader'
-                                });
+                        var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
+                            uploadUrl : 'upload.php'
+                        });
 
-                                var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
-                                    dialogTitle : 'My Upload Dialog',
-                                    panel : uploadPanel,
+                        var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
+                            dialogTitle : 'My Upload Dialog',
+                            panel : uploadPanel
+                        });
 
-                                    listeners : {
-                                        'uploadcomplete' : {
-                                            scope : uploadDialog,
-                                            fn : function(upDialog, manager, items, errorCount) {
-
-                                                var output = 'Uploaded files: <br>';
-                                                Ext.Array.each(items, function(item) {
-                                                    output += item.getFilename() + ' (' + item.getType() + ', '
-                                                        + Ext.util.Format.fileSize(item.getSize()) + ')' + '<br>';
-                                                });
-
-                                                appPanel.update(output);
-
-                                                if (!errorCount) {
-                                                    this.close();
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                });
-
-                                uploadDialog.show();
+                        this.mon(uploadDialog, 'uploadcomplete', function(uploadPanel, manager, items, errorCount) {
+                            this.uploadComplete(items);
+                            if (!errorCount) {
+                                uploadDialog.close();
                             }
-                        }
-                    ]
+                        }, this);
+
+                        uploadDialog.show();
+                    }
+                }, '-', {
+                    xtype : 'button',
+                    text : 'Multipart Upload',
+                    scope : appPanel,
+                    handler : function() {
+
+                        var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
+                            uploadUrl : 'upload_multipart.php',
+                            uploader : 'Ext.ux.upload.uploader.FormDataUploader'
+                        });
+
+                        var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
+                            dialogTitle : 'My Upload Dialog',
+                            panel : uploadPanel
+                        });
+
+                        this.mon(uploadDialog, 'uploadcomplete', function(uploadPanel, manager, items, errorCount) {
+                            this.uploadComplete(items);
+                            if (!errorCount) {
+                                uploadDialog.close();
+                            }
+                        }, this);
+
+                        uploadDialog.show();
+                    }
                 }
             ]
-        });
+        })
 
         appPanel.show();
     }
+
 });
