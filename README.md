@@ -85,7 +85,7 @@ Or you can pass the uploader instance:
   - web server with PHP support
   - Ext JS v4.x instance
 
-Clone the repository and make the `public` directory accessible through your web server. Open the `public/_config.php` file and set the _upload_dir_ option to point to a directory the web server can write to.
+Clone the repository and make the `public` directory accessible through your web server. Open the `public/_config.php` file and set the _upload_dir_ option to point to a directory the web server can write to. If you just want to test the upload process and you don't really want to save the uploaded files, you can set the _fake_ option to true and no files will be written to the disk.
 
 The example `index.html` expects to find the Ext JS instance in the `public/extjs` directory. You can create a link to the instance or copy it there.
 
