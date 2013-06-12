@@ -1,0 +1,13 @@
+{
+    "--title" : "Ext JS Upload Widget",
+    "--output" : "./generated",
+    "--seo" : true,
+    "--external" : [
+        "Ext.Base", "Ext.util.Observable", "Ext.data.Connection", "Ext.window.Window", "Ext.util.MixedCollection", 
+        "Ext.panel.Panel", "Ext.panel.Panel", "Ext.form.field.File", "Ext.grid.Panel", "Ext.toolbar.Toolbar",
+        "Ext.selection.CheckboxModel", "FileList", "File"
+    ],
+    "--" : [
+        "../lib"
+    ]
+}
