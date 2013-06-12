@@ -1,49 +1,54 @@
 <?php
 /**
  * Example processing of raw PUT/POST uploaded files.
- * File metadata should be sent through appropriate HTTP headers. Raw data are read from the standard input.
+ * File metadata may be sent through appropriate HTTP headers:
+ *   - file name - the 'X-File-Name' proprietary header
+ *   - file size - the standard 'Content-Length' header or the 'X-File-Size' proprietary header
+ *   - file type - the standard 'Content-Type' header or the 'X-File-Type' proprietary header
+ * 
+ * Raw data are read from the standard input.
  * The response should be a JSON encoded string with these items:
  *   - success (boolean) - if the upload has been successful
  *   - message (string) - optional message, useful in case of error
  */
+require __DIR__ . '/_common.php';
+$config = require __DIR__ . '/_config.php';
 
 /*
  * You should check these values for XSS or SQL injection.
  */
-$mimeType = $_SERVER['HTTP_X_FILE_TYPE'];
-$size = $_SERVER['HTTP_X_FILE_SIZE'];
-$fileName = $_SERVER['HTTP_X_FILE_NAME'];
+$mimeType = htmlspecialchars($_SERVER['HTTP_X_FILE_TYPE']);
+$size = intval($_SERVER['HTTP_X_FILE_SIZE']);
+$fileName = htmlspecialchars($_SERVER['HTTP_X_FILE_NAME']);
 
-$fp = fopen('php://input', 'r');
+$inputStream = fopen('php://input', 'r');
+$outputFilename = $config['upload_dir'] . '/' . $fileName;
 $realSize = 0;
 $data = '';
 
-if ($fp) {
-    while (! feof($fp)) {
-        $data = fread($fp, 1024);
-        $realSize += strlen($data);
+if ($inputStream) {
+    $outputStream = fopen($outputFilename, 'w');
+    if (! $outputStream) {
+        _error('Error creating local file');
     }
-} else {
-    _response(false, 'Error saving file');
-}
-
-_response();
-
-//---
-function _log ($value)
-{
-    error_log(print_r($value, true));
-}
-
-
-function _response ($success = true, $message = 'OK')
-{
-    $response = array(
-        'success' => $success, 
-        'message' => $message
-    );
     
-    echo json_encode($response);
-    exit();
+    while (! feof($inputStream)) {
+        $bytesWritten = 0;
+        $data = fread($inputStream, 1024);
+        $bytesWritten = fwrite($outputStream, $data);
+        if (false === $bytesWritten) {
+            _error('Error writing data to file');
+        }
+        $realSize += $bytesWritten;
+    }
+    fclose($outputStream);
+} else {
+    _error('Error reading input');
 }
-//---
+
+if ($realSize != $size) {
+    _error('The actual size differs from the declared size in the headers');
+}
+
+_log(sprintf("[raw] Uploaded %s, %s, %d byte(s)", $fileName, $mimeType, $realSize));
+_response();
