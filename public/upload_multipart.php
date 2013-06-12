@@ -28,8 +28,10 @@ foreach ($_FILES as $fileName => $fileData) {
     
     $targetFile = $config['upload_dir'] . '/' . $fileName;
     
-    if (! move_uploaded_file($fileData['tmp_name'], $targetFile)) {
-        _error('Error saving uploaded file');
+    if (! $config['fake']) {
+        if (! move_uploaded_file($fileData['tmp_name'], $targetFile)) {
+            _error('Error saving uploaded file');
+        }
     }
 }
 

@@ -27,21 +27,32 @@ $realSize = 0;
 $data = '';
 
 if ($inputStream) {
-    $outputStream = fopen($outputFilename, 'w');
-    if (! $outputStream) {
-        _error('Error creating local file');
+    if (! $config['fake']) {
+        $outputStream = fopen($outputFilename, 'w');
+        if (! $outputStream) {
+            _error('Error creating local file');
+        }
     }
     
     while (! feof($inputStream)) {
         $bytesWritten = 0;
         $data = fread($inputStream, 1024);
-        $bytesWritten = fwrite($outputStream, $data);
+        
+        if (! $config['fake']) {
+            $bytesWritten = fwrite($outputStream, $data);
+        } else {
+            $bytesWritten = strlen($data);
+        }
+        
         if (false === $bytesWritten) {
             _error('Error writing data to file');
         }
         $realSize += $bytesWritten;
     }
-    fclose($outputStream);
+    
+    if (! $config['fake']) {
+        fclose($outputStream);
+    }
 } else {
     _error('Error reading input');
 }
