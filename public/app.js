@@ -51,7 +51,8 @@ Ext.application({
                         var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
                             uploaderOptions : {
                                 url : 'upload.php'
-                            }
+                            },
+                            filenameEncoder: 'Ext.ux.upload.header.Base64FilenameEncoder'
                         });
 
                         var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
