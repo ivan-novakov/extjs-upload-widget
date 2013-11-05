@@ -1,5 +1,15 @@
 # Ext JS Upload Widget Changelog
 
+## v1.1.1
+(2013-11-05)
+
+- Option to re-try upload when errors occur (#9)
+- Add the DummyUploader to the example (#11)
+- Use "itemId" instead of "id" property (#14)
+- Fixed: The "Browse" button loses the "multiple" attribute (#10)
+- Fixed: Handle utf-8 encoded filenames properly (#15)
+
+
 ## v1.1.0
 (2013-06-12)
 
