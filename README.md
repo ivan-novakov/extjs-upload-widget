@@ -10,6 +10,10 @@
   - displays upload progress
   - supports asynchronous (simultaneous) upload
 
+## Online demo
+
+  - [Demo included in this repository](http://debug.cz/demo/upload/)
+
 ## Requirements
 
   - [Sencha Ext JS 4.x](http://www.sencha.com/products/extjs/)
@@ -89,10 +93,6 @@ Clone the repository and make the `public` directory accessible through your web
 
 The example `index.html` expects to find the Ext JS instance in the `public/extjs` directory. You can create a link to the instance or copy it there.
 
-
-## Online demo
-
-  - [Demo included in this repository](http://debug.cz/demo/upload/)
 
 
 ## Documentation
