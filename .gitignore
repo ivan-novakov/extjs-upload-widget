@@ -1,3 +1,6 @@
 public/extjs
 public/_config.php
 docs/generated
+.buildpath
+.project
+.settings

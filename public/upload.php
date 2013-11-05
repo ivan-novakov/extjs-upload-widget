@@ -17,9 +17,18 @@ $config = require __DIR__ . '/_config.php';
 /*
  * You should check these values for XSS or SQL injection.
  */
+if (!isset($_SERVER['HTTP_X_FILE_NAME'])) {
+    _error('Unknown file name');
+}
+$fileName = $_SERVER['HTTP_X_FILE_NAME'];
+if (isset($_SERVER['HTTP_X_FILENAME_ENCODER']) && 'base64' == $_SERVER['HTTP_X_FILENAME_ENCODER']) {
+    $fileName = base64_decode($fileName);
+}
+$fileName = htmlspecialchars($fileName);
+
 $mimeType = htmlspecialchars($_SERVER['HTTP_X_FILE_TYPE']);
 $size = intval($_SERVER['HTTP_X_FILE_SIZE']);
-$fileName = htmlspecialchars($_SERVER['HTTP_X_FILE_NAME']);
+
 
 $inputStream = fopen('php://input', 'r');
 $outputFilename = $config['upload_dir'] . '/' . $fileName;

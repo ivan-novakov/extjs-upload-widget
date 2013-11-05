@@ -51,7 +51,8 @@ Ext.application({
                         var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
                             uploaderOptions : {
                                 url : 'upload.php'
-                            }
+                            },
+                            filenameEncoder : 'Ext.ux.upload.header.Base64FilenameEncoder'
                         });
 
                         var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
@@ -79,6 +80,30 @@ Ext.application({
                             uploaderOptions : {
                                 url : 'upload_multipart.php'
                             }
+                        });
+
+                        var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
+                            dialogTitle : 'My Upload Dialog',
+                            panel : uploadPanel
+                        });
+
+                        this.mon(uploadDialog, 'uploadcomplete', function(uploadPanel, manager, items, errorCount) {
+                            this.uploadComplete(items);
+                            if (!errorCount) {
+                                uploadDialog.close();
+                            }
+                        }, this);
+
+                        uploadDialog.show();
+                    }
+                }, '-', {
+                    xtype : 'button',
+                    text : 'Dummy upload',
+                    scope : appPanel,
+                    handler : function() {
+
+                        var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
+                            uploader : 'Ext.ux.upload.uploader.DummyUploader'
                         });
 
                         var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
