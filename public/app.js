@@ -38,6 +38,11 @@ Ext.application({
             }
         });
 
+        appPanel.syncCheckbox = Ext.create('Ext.form.field.Checkbox', {
+            inputValue : true,
+            checked : true
+        });
+
         appPanel.addDocked({
             xtype : 'toolbar',
             dock : 'top',
@@ -52,7 +57,8 @@ Ext.application({
                             uploaderOptions : {
                                 url : 'upload.php'
                             },
-                            filenameEncoder : 'Ext.ux.upload.header.Base64FilenameEncoder'
+                            filenameEncoder : 'Ext.ux.upload.header.Base64FilenameEncoder',
+                            synchronous : appPanel.syncCheckbox.getValue()
                         });
 
                         var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
@@ -79,7 +85,8 @@ Ext.application({
                             uploader : 'Ext.ux.upload.uploader.FormDataUploader',
                             uploaderOptions : {
                                 url : 'upload_multipart.php'
-                            }
+                            },
+                            synchronous : appPanel.syncCheckbox.getValue()
                         });
 
                         var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
@@ -103,7 +110,8 @@ Ext.application({
                     handler : function() {
 
                         var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
-                            uploader : 'Ext.ux.upload.uploader.DummyUploader'
+                            uploader : 'Ext.ux.upload.uploader.DummyUploader',
+                            synchronous : appPanel.syncCheckbox.getValue()
                         });
 
                         var uploadDialog = Ext.create('Ext.ux.upload.Dialog', {
@@ -120,7 +128,7 @@ Ext.application({
 
                         uploadDialog.show();
                     }
-                }
+                }, '->', appPanel.syncCheckbox, 'Synchronous upload'
             ]
         })
 
