@@ -55,7 +55,8 @@ Ext.application({
 
                         var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
                             uploaderOptions : {
-                                url : 'upload.php'
+                                url : 'upload.php',
+                                maxFileSize: 3000000
                             },
                             filenameEncoder : 'Ext.ux.upload.header.Base64FilenameEncoder',
                             synchronous : appPanel.syncCheckbox.getValue()
@@ -84,7 +85,8 @@ Ext.application({
                         var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
                             uploader : 'Ext.ux.upload.uploader.FormDataUploader',
                             uploaderOptions : {
-                                url : 'upload_multipart.php'
+                                url : 'upload_multipart.php',
+                                maxFileSize: 3000000
                             },
                             synchronous : appPanel.syncCheckbox.getValue()
                         });
@@ -111,6 +113,9 @@ Ext.application({
 
                         var uploadPanel = Ext.create('Ext.ux.upload.Panel', {
                             uploader : 'Ext.ux.upload.uploader.DummyUploader',
+                            uploaderOptions: {
+                            	maxFileSize: 3000000
+                            },
                             synchronous : appPanel.syncCheckbox.getValue()
                         });
 
