@@ -16,7 +16,7 @@
 
 ## Requirements
 
-  - [Sencha Ext JS 4.x](http://www.sencha.com/products/extjs/)
+  - [Sencha Ext JS 5.x](http://www.sencha.com/products/extjs/)
   - browser supporting the [File API](http://www.w3.org/TR/FileAPI/) - see more info about [browser compatibility](http://caniuse.com/fileapi)
   - server side to process the uploaded files
 
