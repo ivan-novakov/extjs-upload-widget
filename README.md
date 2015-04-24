@@ -1,4 +1,4 @@
-# File upload widget for Ext JS v4.x
+# File upload widget for Sencha Ext JS
 
 ## Features
 
