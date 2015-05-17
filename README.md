@@ -1,4 +1,4 @@
-# File upload widget for Ext JS v4.x
+# File upload widget for Ext JS
 
 ## Features
 
@@ -16,7 +16,7 @@
 
 ## Requirements
 
-  - [Sencha Ext JS 5.x](http://www.sencha.com/products/extjs/)
+  - [Sencha Ext JS 4.x or 5.x](http://www.sencha.com/products/extjs/)
   - browser supporting the [File API](http://www.w3.org/TR/FileAPI/) - see more info about [browser compatibility](http://caniuse.com/fileapi)
   - server side to process the uploaded files
 
@@ -81,13 +81,58 @@ Or you can pass the uploader instance:
         });
     });
 
+### Adding Drag&Drop Support
+
+    var dialog = Ext.create('Ext.ux.upload.Dialog', {
+        dialogTitle: 'My Drag&Drop Upload Widget',
+        uploadUrl: 'upload.php',
+        listeners: {
+            show: function(me, eOpts) {
+
+                var self = Ext.get(me.id);
+
+                function cancel(e) {
+                    e.stopPropagation && e.stopPropagation();
+                    e.preventDefault && e.preventDefault();
+                }
+
+                function addEventHandler(obj, evt, handler) {
+                    if (obj.addEventListener)
+                    {// W3C method
+                        obj.addEventListener(evt, handler, false);
+                    }
+                    else if (obj.attachEvent)
+                    {// IE method
+                        obj.attachEvent('on' + evt, handler);
+                    }
+                    else
+                    {// old school method
+                        obj['on' + evt] = handler;
+                    }
+                }
+
+                addEventHandler(self.dom, 'dragover', cancel);
+                addEventHandler(self.dom, 'dragenter', cancel);
+                addEventHandler(self.dom, 'drop', function(e) {
+                    cancel.call(this, e);
+
+                    self.component.panel.queue.addFiles(e.dataTransfer.files);
+
+                    return false;
+                });
+
+            }
+        }
+    });
+    
+
 ## Running the example
 
 
 ### Requirements:
 
   - web server with PHP support
-  - Ext JS v4.x instance
+  - Ext JS v4.x or v5.x instance
 
 Clone the repository and make the `public` directory accessible through your web server. Open the `public/_config.php` file and set the _upload_dir_ option to point to a directory the web server can write to. If you just want to test the upload process and you don't really want to save the uploaded files, you can set the _fake_ option to true and no files will be written to the disk.
 
