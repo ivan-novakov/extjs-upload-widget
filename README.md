@@ -89,7 +89,16 @@ Or you can pass the uploader instance:
         listeners: {
             show: function(me, eOpts) {
 
-                var self = Ext.get(me.id);
+                var self = Ext.get(me.id),
+                    queue = self.component.panel.queue,
+                    gridview = self.component.panel.grid.getView();
+
+                gridview.emptyText = '<div class="x-grid-empty">Add files simply by dragging and dropping in here</div>';
+                gridview.refresh();
+
+                queue.on('queuechange', function(me) {
+                    gridview.refresh();
+                });
 
                 function cancel(e) {
                     e.stopPropagation && e.stopPropagation();
